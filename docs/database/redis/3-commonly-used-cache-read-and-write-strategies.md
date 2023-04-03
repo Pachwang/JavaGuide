@@ -8,7 +8,7 @@ tag:
 
 看到很多小伙伴简历上写了“**熟练使用缓存**”，但是被我问到“**缓存常用的3种读写策略**”的时候却一脸懵逼。
 
-在我看来，造成这个问题的原因是我们在学习 Redis 的时候，可能只是简单了写一些 Demo，并没有去关注缓存的读写策略，或者说压根不知道这回事。
+在我看来，造成这个问题的原因是我们在学习 Redis 的时候，可能只是简单地写一些 Demo，并没有去关注缓存的读写策略，或者说压根不知道这回事。
 
 但是，搞懂3种常见的缓存读写策略对于实际工作中使用缓存以及面试中被问到缓存都是非常有帮助的！
 
@@ -67,7 +67,7 @@ Cache Aside Pattern 中服务端需要同时维系 db 和 cache，并且是以 d
 
 **缺陷 1：首次请求数据一定不在 cache 的问题**
 
-解决办法：可以将热点数据可以提前放入 cache 中。
+解决办法：可以将热点数据提前放入 cache 中。
 
 **缺陷 2：写操作比较频繁的话导致 cache 中的数据会被频繁被删除，这样会影响缓存命中率 。**
 
@@ -102,7 +102,7 @@ Read/Write Through Pattern 中服务端把 cache 视为主要数据存储，从�
 
 Read-Through Pattern 实际只是在 Cache-Aside Pattern 之上进行了封装。在 Cache-Aside Pattern 下，发生读请求的时候，如果 cache 中不存在对应的数据，是由客户端自己负责把数据写入 cache，而 Read Through Pattern 则是 cache 服务自己来写入缓存的，这对客户端是透明的。
 
-和 Cache Aside Pattern 一样， Read-Through Pattern 也有首次请求数据一定不再 cache 的问题，对于热点数据可以提前放入缓存中。
+和 Cache Aside Pattern 一样， Read-Through Pattern 也有首次请求数据一定不在 cache 的问题，对于热点数据可以提前放入缓存中。
 
 ### Write Behind Pattern（异步缓存写入）
 
@@ -110,7 +110,7 @@ Write Behind Pattern 和 Read/Write Through Pattern 很相似，两者都是由 
 
 但是，两个又有很大的不同：**Read/Write Through 是同步更新 cache 和 db，而 Write Behind 则是只更新缓存，不直接更新 db，而是改为异步批量的方式来更新 db。**
 
-很明显，这种方式对数据一致性带来了更大的挑战，比如 cache 数据可能还没异步更新 db 的话，cache 服务可能就就挂掉了。
+很明显，这种方式对数据一致性带来了更大的挑战，比如 cache 数据可能还没异步更新 db 的话，cache 服务可能就挂掉了。
 
 这种策略在我们平时开发过程中也非常非常少见，但是不代表它的应用场景少，比如消息队列中消息的异步写入磁盘、MySQL 的 Innodb Buffer Pool 机制都用到了这种策略。
 
